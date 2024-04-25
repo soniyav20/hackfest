@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hackfest/login_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 void main() async {
@@ -81,22 +82,23 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
     }
   }
 
-  Future<void> _getCurrentLocation() async {
+  Future<String> _getCurrentLocation() async {
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
       // Handle permission denied
-      return;
+      return '';
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Handle permanently denied
-      return;
+      return '';
     }
 
     // Get current location
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print(position);
+    print(position.toString());
+    return position.toString();
     // Handle user location
   }
 
@@ -128,6 +130,15 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
             ),
             SizedBox(height: 20),
             _buildRegistrationForm(),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+              child: Text('Login'),
+            ),
           ],
         ),
       ),
@@ -135,77 +146,72 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
   }
 
   Widget _buildRegistrationForm() {
-    String name = '';
-    String adharCardNumber = '';
-    String numberOfPeople = '';
-    String location = '';
-    String email = '';
-    String password = '';
+    TextEditingController nameController = TextEditingController();
+    TextEditingController adharCardController = TextEditingController();
+    TextEditingController numberOfPeopleController = TextEditingController();
+    TextEditingController locationController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
 
     return Padding(
       padding: EdgeInsets.all(16),
       child: Column(
         children: [
           TextFormField(
+            controller: nameController,
             decoration: InputDecoration(labelText: 'Name'),
-            onChanged: (value) {
-              name = value;
-            },
           ),
           SizedBox(height: 10),
           TextFormField(
+            controller: adharCardController,
             decoration: InputDecoration(labelText: 'Adhar Card Number'),
-            onChanged: (value) {
-              adharCardNumber = value;
-            },
           ),
           SizedBox(height: 10),
           TextFormField(
+            controller: numberOfPeopleController,
             decoration: InputDecoration(labelText: 'Number of People'),
-            onChanged: (value) {
-              numberOfPeople = value;
-            },
           ),
           SizedBox(height: 10),
           TextFormField(
+            controller: locationController,
             decoration: InputDecoration(labelText: 'Location'),
-            onChanged: (value) {
-              location = value;
-            },
           ),
+          SizedBox(height: 10),
+          Text(locationController.text),
           SizedBox(height: 10),
           ElevatedButton(
-            onPressed: _getCurrentLocation,
+            onPressed: () async {
+              String location = await _getCurrentLocation();
+              locationController.text = location;
+            },
             child: Text('Get Current Location'),
           ),
           SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              // Open map for selecting location
-              // You can use packages like google_maps_flutter or location_picker
-            },
-            child: Text('Select Location on Map'),
-          ),
-          SizedBox(height: 10),
           TextFormField(
+            controller: emailController,
             decoration: InputDecoration(labelText: 'Email'),
-            onChanged: (value) {
-              email = value;
-            },
           ),
           SizedBox(height: 10),
           TextFormField(
+            controller: passwordController,
             decoration: InputDecoration(labelText: 'Password'),
             obscureText: true,
-            onChanged: (value) {
-              password = value;
-            },
           ),
           SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              _registerUser(name, adharCardNumber, numberOfPeople, location,
-                  email, password);
+              _registerUser(
+                nameController.text,
+                adharCardController.text,
+                numberOfPeopleController.text,
+                locationController.text,
+                emailController.text,
+                passwordController.text,
+              );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
             },
             child: Text('Register'),
           ),

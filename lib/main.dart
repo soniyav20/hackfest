@@ -39,7 +39,7 @@ class InternetStatusPage extends StatefulWidget {
 }
 
 class _InternetStatusPageState extends State<InternetStatusPage> {
-  Color _statusColor = Colors.red; // Default color is red
+  Color _statusColor = Colors.green; // Default color is red
 
   @override
   void initState() {
@@ -113,7 +113,7 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hackfest Registration'),
+        title: Text('Disaster Relief'),
         backgroundColor: Colors.black12,
       ),
       body: SingleChildScrollView(
@@ -156,7 +156,7 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
                       MaterialPageRoute(builder: (context) => AdminPage()),
                     );
                   },
-                  child: Text('Admin Login'),
+                  child: Text('Rescue Crew Login'),
                 ),
               ],
             ),
@@ -232,6 +232,7 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
             },
             child: Text('Register'),
           ),
+          Text("Already have an account?")
         ],
       ),
     );

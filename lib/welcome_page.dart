@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hackfest/main.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -11,6 +12,19 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State with SingleTickerProviderStateMixin {
   final User? user = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 0;
+  Color _statusColor = Colors.green; // Default color is red
+  void _checkInternetStatus() async {
+    print(await InternetConnectionCheckerPlus().hasConnection);
+    final listener = InternetConnectionCheckerPlus()
+        .onStatusChange
+        .listen((InternetConnectionStatus status) {
+      setState(() {
+        _statusColor = status == InternetConnectionStatus.connected
+            ? Colors.green
+            : Colors.red;
+      });
+    });
+  }
 
   static const List<String> _pageTitles = [
     'Updates',
@@ -101,8 +115,9 @@ class _WelcomePageState extends State with SingleTickerProviderStateMixin {
             Map<String, dynamic> data =
                 snapshot.data!.docs[index].data() as Map<String, dynamic>;
             return ListTile(
-              title: Text(data['type']),
-              subtitle: Text(data['time'].toString()),
+              title: Text(data['type'].toString().toUpperCase()),
+              subtitle: Text(
+                  'Time: ${data['time'].toDate().toString().substring(0, 16)}'),
             );
           },
         );

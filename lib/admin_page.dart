@@ -49,7 +49,7 @@ class _AdminPageState extends State<AdminPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Login'),
+        title: Text('Rescue Crew Login'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16),

@@ -43,3 +43,35 @@ class MapPage extends StatelessWidget {
     }
   }
 }
+//
+// class GoogleMapsIframe extends StatefulWidget {
+//   final String url;
+//   const GoogleMapsIframe({Key? key, required this.url}) : super(key: key);
+//   @override
+//   _GoogleMapsIframeState createState() => _GoogleMapsIframeState();
+// }
+//
+// class _GoogleMapsIframeState extends State {
+//   late Widget iframeWidget;
+//   final IFrameElement iframeElement = IFrameElement();
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     iframeElement.height = '100%';
+//     iframeElement.width = '100%';
+//     iframeElement.src = widget.url;
+//     iframeElement.style.border = 'none';
+//     ui.platformViewRegistry.registerViewFactory(
+//       widget.url,
+//       (int viewId) => iframeElement,
+//     );
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return HtmlElementView(
+//       viewType: widget.url,
+//     );
+//   }
+// }

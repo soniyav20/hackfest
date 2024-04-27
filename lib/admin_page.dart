@@ -1,14 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hackfest/welcome_page.dart';
+import 'package:hackfest/admin_welcome_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
-class LoginPage extends StatefulWidget {
+class AdminPage extends StatefulWidget {
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<AdminPage> createState() => _AdminPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AdminPageState extends State<AdminPage> {
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
@@ -37,19 +36,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     void _loginUser(String email, String password) async {
-      try {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        // Navigate to welcome page after successful login
-        Navigator.pop(context);
+      if (email == "123" && password == "123") {
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => WelcomePage()),
-        );
-      } catch (e) {
-        print("Error logging in: $e");
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => AdminWelcomePage()));
+      } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Invalid Login')));
       }
@@ -57,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Admin Login'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
@@ -84,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 TextFormField(
                   controller: emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: InputDecoration(labelText: 'Code'),
                 ),
                 SizedBox(height: 10),
                 TextFormField(

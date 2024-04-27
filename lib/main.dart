@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:hackfest/admin_page.dart';
 import 'package:hackfest/login_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
@@ -77,8 +78,14 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
         'location': location,
         'email': email,
       });
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
     } catch (e) {
       print("Error registering user: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Fill all the fields Properly')));
     }
   }
 
@@ -106,7 +113,7 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Hackfest'),
+        title: Text('Hackfest Registration'),
         backgroundColor: Colors.black12,
       ),
       body: SingleChildScrollView(
@@ -130,14 +137,28 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
             ),
             SizedBox(height: 20),
             _buildRegistrationForm(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
-                );
-              },
-              child: Text('Login'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
+                  },
+                  child: Text('Login'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AdminPage()),
+                    );
+                  },
+                  child: Text('Admin Login'),
+                ),
+              ],
             ),
           ],
         ),
@@ -207,10 +228,6 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
                 locationController.text,
                 emailController.text,
                 passwordController.text,
-              );
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
               );
             },
             child: Text('Register'),

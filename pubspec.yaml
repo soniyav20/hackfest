@@ -41,6 +41,7 @@ dependencies:
   connectivity_plus: ^1.0.5
   internet_connection_checker_plus: ^1.0.1
   geolocator: ^11.0.0
+  google_maps_flutter: ^2.6.1
 
 dev_dependencies:
   flutter_test:

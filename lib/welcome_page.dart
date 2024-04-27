@@ -124,6 +124,7 @@ class _WelcomePageState extends State with SingleTickerProviderStateMixin {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text("I am safe but I need food supply"),
           ElevatedButton(
             onPressed: () {
               _showConfirmationDialog("food");
@@ -131,6 +132,7 @@ class _WelcomePageState extends State with SingleTickerProviderStateMixin {
             child: Text('Ask Food'),
           ),
           SizedBox(height: 20),
+          Text("I am at danger, Come and Save me"),
           ElevatedButton(
             onPressed: () {
               _showConfirmationDialog("sos");

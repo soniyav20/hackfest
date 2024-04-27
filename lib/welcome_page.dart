@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hackfest/main.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
@@ -33,11 +34,32 @@ class _WelcomePageState extends State with SingleTickerProviderStateMixin {
     'Profile Details',
   ];
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _getCurrentLocationAndSave() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    String location = '${position.latitude}, ${position.longitude}';
+
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).update({
+        'location': location,
+      });
+      setState(() {
+        // Update the UI with the new location
+      });
+    }
+  }
+
   Widget _buildProfileDetails() {
     return Center(
       child: FutureBuilder<DocumentSnapshot>(
-        future:
-            FirebaseFirestore.instance.collection('users').doc(user!.uid).get(),
+        future: FirebaseFirestore.instance
+            .collection('users')
+            .doc(_auth.currentUser!.uid)
+            .get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -65,6 +87,11 @@ class _WelcomePageState extends State with SingleTickerProviderStateMixin {
               Text("Number of People: ${data['numberOfPeople']}"),
               SizedBox(height: 10),
               Text("Location: ${data['location']}"),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _getCurrentLocationAndSave,
+                child: Text('Update Location'),
+              ),
             ],
           );
         },
@@ -73,18 +100,40 @@ class _WelcomePageState extends State with SingleTickerProviderStateMixin {
   }
 
   Widget _buildUpdates() {
-    final List<Map<String, dynamic>> dummyUpdates = [
-      {"message": "Update 1", "time": "10:00 AM"},
-      {"message": "Update 2", "time": "11:00 AM"},
-      {"message": "Update 3", "time": "12:00 PM"},
-    ];
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('updates').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-    return ListView.builder(
-      itemCount: dummyUpdates.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text(dummyUpdates[index]["message"]),
-          subtitle: Text(dummyUpdates[index]["time"]),
+        final updates = snapshot.data!.docs;
+
+        return ListView.builder(
+          itemCount: updates.length,
+          itemBuilder: (BuildContext context, int index) {
+            final update = updates[index];
+            final bool isSevere = update['isSevere'];
+
+            return ListTile(
+              title: Text(
+                update['disasterType'],
+                style: TextStyle(
+                    color: isSevere ? Colors.red : Colors.yellow,
+                    fontWeight: FontWeight.bold),
+              ),
+              subtitle: Column(
+                children: [
+                  Text(
+                      update['timestamp'].toDate().toString().substring(0, 16)),
+                  Text('Suggestion: ${update['suggestion']}'),
+                  Text('Severity: ${isSevere ? "High" : "Low"}'),
+                ],
+              ),
+            );
+          },
         );
       },
     );

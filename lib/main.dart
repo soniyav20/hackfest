@@ -12,10 +12,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
-      apiKey: "API_KEY",
-      appId: "APP_ID",
-      messagingSenderId: "MSG_ID",
-      projectId: "PROJ_ID",
+      apiKey: "AIzaSyCA5JJe1J3okqpAVkvICIg3eQB_CvvkJ-M",
+      appId: "1:795621005285:android:985e46eb36c7a2171f410c",
+      messagingSenderId: "795621005285",
+      projectId: "hackfest-d74d3",
     ),
   );
   runApp(MyApp());
@@ -57,7 +57,7 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
         _statusColor = status == InternetConnectionStatus.connected
             ? Colors.green
             : Colors.red;
-        if (InternetConnectionStatus.connected == true) {
+        if (InternetConnectionStatus.connected == false) {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

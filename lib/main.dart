@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hackfest/admin_page.dart';
+import 'package:hackfest/login_offline.dart';
 import 'package:hackfest/login_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
@@ -56,6 +57,12 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
         _statusColor = status == InternetConnectionStatus.connected
             ? Colors.green
             : Colors.red;
+        if (InternetConnectionStatus.connected == true) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => OfflineLoginPage()));
+        }
       });
     });
   }

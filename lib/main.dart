@@ -48,16 +48,25 @@ class _InternetStatusPageState extends State<InternetStatusPage> {
     _checkInternetStatus();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _checkInternetStatus() async {
-    print(await InternetConnectionCheckerPlus().hasConnection);
+    bool a = await InternetConnectionCheckerPlus().hasConnection;
+    print("chekcjk");
     final listener = InternetConnectionCheckerPlus()
         .onStatusChange
         .listen((InternetConnectionStatus status) {
       setState(() {
+        print("gjdslkgj");
+
         _statusColor = status == InternetConnectionStatus.connected
             ? Colors.green
             : Colors.red;
-        if (InternetConnectionStatus.connected == false) {
+        if (a == false) {
+          print("navdskgjdl");
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(

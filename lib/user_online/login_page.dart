@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hackfest/welcome_page.dart';
+import 'package:hackfest/user_online/welcome_page.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class LoginPage extends StatefulWidget {

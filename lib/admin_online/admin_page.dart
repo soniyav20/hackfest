@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hackfest/admin_welcome_page.dart';
-import 'package:hackfest/login_offline.dart';
+import 'package:hackfest/admin_online/admin_welcome_page.dart';
+import 'package:hackfest/user_offline/login_offline.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class AdminPage extends StatefulWidget {

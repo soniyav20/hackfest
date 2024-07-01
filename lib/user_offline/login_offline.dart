@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hackfest/admin_offline.dart';
-import 'package:hackfest/user_offline.dart';
+import 'package:hackfest/admin_offline/admin_offline.dart';
+import 'package:hackfest/user_offline/user_offline.dart';
 
 class OfflineLoginPage extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();

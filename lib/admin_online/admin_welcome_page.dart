@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hackfest/add_warning_page.dart';
+import 'package:hackfest/admin_online/add_warning_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AdminWelcomePage extends StatefulWidget {
